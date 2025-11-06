@@ -1,5 +1,7 @@
 package figures;
 
+import runtime.exceptions.InvalidFigureException;
+
 import static utils.GeometryUtils.equal;
 import static utils.GeometryUtils.sideLength;
 

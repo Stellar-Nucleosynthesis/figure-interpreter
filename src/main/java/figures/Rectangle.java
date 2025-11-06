@@ -1,5 +1,7 @@
 package figures;
 
+import runtime.exceptions.InvalidFigureException;
+
 import static utils.GeometryUtils.perpendicular;
 import static utils.GeometryUtils.vec;
 

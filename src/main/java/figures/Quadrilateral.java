@@ -1,5 +1,6 @@
 package figures;
 
+import runtime.exceptions.InvalidFigureException;
 import lombok.Data;
 
 import java.awt.*;
