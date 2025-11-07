@@ -1,111 +1,121 @@
 grammar Geometry;
 
 program
-    : stm+ EOF
+    : stm* EOF
     ;
 
 stm
-    : type ID ASSIGN expr SEMI
-    | func_def
-    | SHOW expr SEMI
+    : varDecl
+    | funcDecl
+    | showStm
     ;
 
-type
-    : INT_T
-    | DOUBLE_T
-    | POINT_T
-    | SEGMENT_T
-    | LINE_T
-    | QUAD_T
-    | PARAL_T
-    | TRAPEZ_T
-    | RHOMB_T
-    | RECT_T
-    | SQUARE_T
+varDecl
+    : LET type ID '=' expr ';'
+    ;
+
+funcDecl
+    : LET FUNCTION ID FROM '(' paramList? ')' RETURNS type funcProgram
+    ;
+
+showStm
+    : SHOW expr ';'
+    ;
+
+paramList
+    : param (',' param)*
     ;
 
 param
     : type ID
     ;
 
-params
-    : param (COMMA param)*
+funcProgram
+    : '{' stm* returnStm '}'
     ;
 
-args
-    : expr (COMMA expr)*
-    ;
-
-return_stm
-    : RETURN expr SEMI
-    ;
-
-func_def
-    : ID LPAREN params? RPAREN LBRACE stm+ return_stm RBRACE
+returnStm
+    : RETURN expr ';'
     ;
 
 expr
-    : ID
-    | CONST_INT
-    | CONST_DOUBLE
-    | ID LPAREN args? RPAREN
-    | POINT_T LPAREN params RPAREN
-    | SEGMENT_T LPAREN params RPAREN
-    | LINE_T LPAREN params RPAREN
-    | QUAD_T LPAREN params RPAREN
-    | PARAL_T LPAREN params RPAREN
-    | TRAPEZ_T LPAREN params RPAREN
-    | RHOMB_T LPAREN params RPAREN
-    | RECT_T LPAREN params RPAREN
-    | SQUARE_T LPAREN params RPAREN
+    : constructorCall
+    | functionCall
+    | ID
+    | literal
+    | '(' expr ')'
     ;
 
-ASSIGN      : '=' ;
-SEMI        : ';' ;
-COMMA       : ',' ;
-LPAREN      : '(' ;
-RPAREN      : ')' ;
-LBRACE      : '{' ;
-RBRACE      : '}' ;
-
-SHOW        : 'show' ;
-RETURN      : 'return' ;
-
-INT_T       : 'Int' ;
-DOUBLE_T    : 'Double' ;
-POINT_T     : 'Point' ;
-SEGMENT_T   : 'Segment' ;
-LINE_T      : 'Line' ;
-QUAD_T      : 'Quad' ;
-PARAL_T     : 'Paral' ;
-TRAPEZ_T    : 'Trapez' ;
-RHOMB_T     : 'Rhomb' ;
-RECT_T      : 'Rect' ;
-SQUARE_T    : 'Square' ;
-
-CONST_DOUBLE
-    : DIGITS '.' DIGITS ( [eE] [+-]? DIGITS )?
-    | DIGITS [eE] [+-]? DIGITS
+constructorCall
+    : geometricType '(' argList? ')'
     ;
 
-CONST_INT
-    : DIGITS
+functionCall
+    : ID '(' argList? ')'
     ;
+
+argList
+    : expr (',' expr)*
+    ;
+
+type
+    : numericType
+    | geometricType
+    ;
+
+numericType
+    : INT
+    | DOUBLE
+    ;
+
+geometricType
+    : POINT
+    | SQUARE
+    | SEGMENT
+    | LINE
+    | RECT
+    | RHOMB
+    | TRAPEZ
+    | PARAL
+    ;
+
+literal
+    : INT_CONST
+    | DOUBLE_CONST
+    ;
+
+LET         : 'НЕХАЙ' ;
+FUNCTION    : 'ФУНКЦІЯ' ;
+FROM        : 'ВІД' ;
+RETURNS     : 'ПОВЕРТАЄ' ;
+RETURN      : 'ПОВЕРНУТИ' ;
+SHOW        : 'ПОКАЗАТИ' ;
+
+INT         : 'ЦІЛЕ' ;
+DOUBLE      : 'ДІЙСНЕ' ;
+POINT       : 'ТОЧКА' ;
+SQUARE      : 'КВАДРАТ' ;
+SEGMENT     : 'ВІДРІЗОК' ;
+LINE        : 'ЛІНІЯ' ;
+RECT        : 'ПРЯМОКУТНИК' ;
+RHOMB       : 'РОМБ' ;
+TRAPEZ      : 'ТРАПЕЦІЯ' ;
+PARAL       : 'ПАРАЛЕЛОГРАМ' ;
 
 ID
-    : [a-zA-Z_] [a-zA-Z_0-9]*
+    : [A-Za-z\u0400-\u04FF_] [A-Za-z0-9\u0400-\u04FF_]*
     ;
 
-fragment DIGITS : [0-9]+ ;
-
-WS
-    : [ \t\r\n]+ -> skip
+INT_CONST
+    : DIGIT+
     ;
 
-LINE_COMMENT
-    : '//' ~[\r\n]* -> skip
+DOUBLE_CONST
+    : DIGIT+ ('.' DIGIT+)?
     ;
 
-BLOCK_COMMENT
-    : '/*' .*? '*/' -> skip
-    ;
+fragment DIGIT : [0-9] ;
+
+WS  : [ \t\r\n\u000C]+ -> skip ;
+LINE_COMMENT : '//' ~[\r\n]* -> skip ;
+BLOCK_COMMENT : '/*' .*? '*/' -> skip ;
