@@ -10,6 +10,11 @@ public class Point implements Figure {
     private double y;
     private String name;
 
+    public Point(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
     @Override
     public void show(Graphics g, java.awt.Point origin, double unit) {
         int sx = Figure.toScreenX(x, origin, unit);

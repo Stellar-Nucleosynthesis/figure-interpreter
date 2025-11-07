@@ -1,6 +1,7 @@
 package figures;
 
 import lombok.Data;
+import runtime.exceptions.InvalidFigureException;
 
 import java.awt.*;
 
@@ -9,6 +10,13 @@ public class Line implements Figure {
     private double k;
     private double b;
     private String name;
+
+    public Line(double k, double b) {
+        if(Double.isNaN(k) || Double.isNaN(b))
+            throw new InvalidFigureException("Invalid line: k and b must be defined");
+        this.k = k;
+        this.b = b;
+    }
 
     @Override
     public void show(Graphics g, java.awt.Point origin, double unit) {

@@ -18,6 +18,10 @@ public class Quadrilateral implements Figure {
 
     public Quadrilateral(Point p1, Point p2, Point p3, Point p4) {
         checkPoints(p1, p2, p3, p4);
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+        this.p4 = p4;
     }
 
     @Override
@@ -29,6 +33,7 @@ public class Quadrilateral implements Figure {
         for (int i = 0; i < 4; i++) {
             xs[i] = Figure.toScreenX(pts[i].getX(), origin, unit);
             ys[i] = Figure.toScreenY(pts[i].getY(), origin, unit);
+            pts[i].show(g, origin, unit);
         }
         g.drawPolygon(xs, ys, 4);
 

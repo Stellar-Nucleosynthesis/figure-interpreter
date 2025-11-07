@@ -1,6 +1,7 @@
 package types;
 
 import lombok.Data;
+import types.exceptions.TypeConversionException;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +17,16 @@ public class FunctionType implements Type {
         return returns.getName() + " (" +
                 accepts.stream().map(Type::getName)
                         .collect(Collectors.joining(", ")) + ")";
+    }
+
+    @Override
+    public boolean canConvertTo(Type target) {
+        return false;
+    }
+
+    @Override
+    public Object convert(Object value, Type target) {
+        throw new TypeConversionException("Cannot convert from " + getName() + " to " + target);
     }
 
     @Override
