@@ -15,6 +15,8 @@ import runtime.environment.ExecutionContext;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +24,50 @@ import java.util.List;
 public class Main extends JPanel {
     private static final List<Figure> toShow = new ArrayList<>();
 
+    private double unit = 20;
+    private double panX = 0, panY = 0;
+    private Point lastDrag = null;
+
+    public Main() {
+        MouseAdapter ma = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) { lastDrag = e.getPoint(); }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                Point p = e.getPoint();
+                panX += p.x - lastDrag.x;
+                panY += p.y - lastDrag.y;
+                lastDrag = p;
+                repaint();
+            }
+        };
+        addMouseListener(ma);
+        addMouseMotionListener(ma);
+
+        addMouseWheelListener(e -> {
+            int notches = e.getWheelRotation();
+            double scale = Math.pow(1.1, -notches);
+            Point mouse = e.getPoint();
+            Point2D.Double center = new Point2D.Double(getWidth() / 2.0, getHeight() / 2.0);
+
+            double worldX = (mouse.x - center.x - panX) / unit;
+            double worldY = (mouse.y - center.y - panY) / unit;
+
+            unit *= scale;
+
+            panX = mouse.x - center.x - worldX * unit;
+            panY = mouse.y - center.y - worldY * unit;
+            repaint();
+        });
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Point origin = new Point(getWidth() / 2, getHeight() / 2);
-        double unit = 20;
+        Point origin = new Point((int) (getWidth() / 2.0 + panX), (int) (getHeight() / 2.0 + panY));
+        double unitLocal = unit;
 
         Color init = g.getColor();
         g.setColor(Color.LIGHT_GRAY);
@@ -36,7 +76,7 @@ public class Main extends JPanel {
         g.setColor(init);
 
         for (Figure figure : toShow) {
-            figure.show(g, origin, unit);
+            figure.show(g, origin, unitLocal);
         }
     }
 

@@ -3,7 +3,7 @@ package utils;
 import figures.Point;
 
 public class GeometryUtils {
-    public static final double EPS = 1e-6;
+    public static final double EPS = 1e-2;
 
     public static Vector vec(Point a, Point b) {
         return new Vector(b.getX() - a.getX(), b.getY() - a.getY());
