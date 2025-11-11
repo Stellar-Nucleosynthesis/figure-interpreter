@@ -14,33 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends JPanel {
-    private final List<Figure> toShow = new ArrayList<>();
-
-    public Main() throws IOException {
-        CharStream input = CharStreams.fromFileName("src/main/resources/example.my");
-        GeometryLexer lexer = new GeometryLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        GeometryParser parser = new GeometryParser(tokens);
-        parser.removeErrorListeners();
-
-        parser.addErrorListener(new FormattedErrorListener());
-        ParseTree tree = parser.program();
-
-        GeometryVisitorImpl visitor = new GeometryVisitorImpl(new ConstructorSymbolTable(null));
-        NodeAttributes res = visitor.visit(tree);
-        System.out.println(res);
-
-        List<Command> code = res.getCode();
-        ExecutionContext context = new ExecutionContext(new ConstructorExecutionContext(null));
-        for (Command command : code) {
-            command.execute(context);
-        }
-        System.out.println(context);
-
-        System.out.println(tree.toStringTree(parser));
-
-        this.toShow.addAll(context.getShowList().getFigures());
-    }
+    private static final List<Figure> toShow = new ArrayList<>();
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -60,16 +34,53 @@ public class Main extends JPanel {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        if (args.length != 1) {
+            System.err.println("Usage: java -jar figure-interpreter.jar <file>");
+            return;
+        }
+        CharStream input = CharStreams.fromFileName(args[0]);
+        GeometryLexer lexer = new GeometryLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        GeometryParser parser = new GeometryParser(tokens);
+        parser.removeErrorListeners();
+
+        FormattedErrorListener errorListener = new FormattedErrorListener();
+        parser.addErrorListener(errorListener);
+        ParseTree tree = parser.program();
+        if (errorListener.hasErrors()) {
+            for(String error : errorListener.getErrors())
+                System.err.println(error);
+            return;
+        }
+
+        GeometryVisitorImpl visitor = new GeometryVisitorImpl(
+                new ConstructorSymbolTable(null));
+        NodeAttributes res = visitor.visit(tree);
+        if(!res.getErrors().isEmpty()) {
+            for(String error : res.getErrors())
+                System.err.println(error);
+            return;
+        }
+
+        List<Command> code = res.getCode();
+        ExecutionContext context = new ExecutionContext(
+                new ConstructorExecutionContext(null));
+        try{
+            for (Command command : code) {
+                command.execute(context);
+            }
+        } catch (Exception e){
+            System.err.println("Error: " + e.getMessage());
+            return;
+        }
+        toShow.addAll(context.getShowList().getFigures());
+
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Line Demo");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 600);
-            try {
-                frame.add(new Main());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            frame.add(new Main());
             frame.setVisible(true);
         });
     }

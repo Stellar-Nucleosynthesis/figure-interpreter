@@ -30,4 +30,8 @@ public class FormattedErrorListener extends BaseErrorListener {
         msg = decodeUnicode(msg);
         errors.add(String.format("Line %d:%d — %s%n", line, charPositionInLine, msg));
     }
+
+    public boolean hasErrors() {
+        return !errors.isEmpty();
+    }
 }
