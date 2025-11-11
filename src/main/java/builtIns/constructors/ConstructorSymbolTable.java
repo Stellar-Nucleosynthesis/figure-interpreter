@@ -12,7 +12,7 @@ public class ConstructorSymbolTable extends SymbolTable {
         super(outer);
         add("ТОЧКА_ВІД", new FunctionType(BaseType.POINT, List.of(BaseType.DOUBLE,  BaseType.DOUBLE)));
         add("ВІДРІЗОК_ВІД", new FunctionType(BaseType.SEGMENT, List.of(BaseType.POINT,  BaseType.POINT)));
-        add("ЛІНІЯ_ВІД", new FunctionType(BaseType.LINE, List.of(BaseType.DOUBLE,  BaseType.DOUBLE)));
+        add("ПРЯМА_ВІД", new FunctionType(BaseType.LINE, List.of(BaseType.DOUBLE,  BaseType.DOUBLE)));
         List<Type> fourPoints = List.of(BaseType.POINT, BaseType.POINT, BaseType.POINT, BaseType.POINT);
         add("ЧОТИРИКУТНИК_ВІД", new FunctionType(BaseType.QUAD, fourPoints));
         add("РОМБ_ВІД", new FunctionType(BaseType.RHOMB, fourPoints));

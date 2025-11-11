@@ -1,5 +1,11 @@
 import builtIns.constructors.ConstructorExecutionContext;
 import builtIns.constructors.ConstructorSymbolTable;
+import builtIns.io.IoExecutionContext;
+import builtIns.io.IoSymbolTable;
+import builtIns.quadUtils.QuadUtilsExecutionContext;
+import builtIns.quadUtils.QuadUtilsSymbolTable;
+import builtIns.segmentUtils.SegmentUtilsExecutionContext;
+import builtIns.segmentUtils.SegmentUtilsSymbolTable;
 import compile.translation.NodeAttributes;
 import figures.Figure;
 import org.antlr.v4.runtime.*;
@@ -55,7 +61,10 @@ public class Main extends JPanel {
         }
 
         GeometryVisitorImpl visitor = new GeometryVisitorImpl(
-                new ConstructorSymbolTable(null));
+                new ConstructorSymbolTable(
+                        new IoSymbolTable(
+                                new QuadUtilsSymbolTable(
+                                        new SegmentUtilsSymbolTable(null)))));
         NodeAttributes res = visitor.visit(tree);
         if(!res.getErrors().isEmpty()) {
             for(String error : res.getErrors())
@@ -65,7 +74,10 @@ public class Main extends JPanel {
 
         List<Command> code = res.getCode();
         ExecutionContext context = new ExecutionContext(
-                new ConstructorExecutionContext(null));
+                new ConstructorExecutionContext(
+                        new IoExecutionContext(
+                                new QuadUtilsExecutionContext(
+                                        new SegmentUtilsExecutionContext(null)))));
         try{
             for (Command command : code) {
                 command.execute(context);

@@ -7,7 +7,7 @@ public class ConstructorExecutionContext extends ExecutionContext {
         super(outer);
         setVar("ТОЧКА_ВІД", new PointConstructor());
         setVar("ВІДРІЗОК_ВІД", new SegmentConstructor());
-        setVar("ЛІНІЯ_ВІД", new LineConstructor());
+        setVar("ПРЯМА_ВІД", new LineConstructor());
         setVar("ЧОТИРИКУТНИК_ВІД", new QuadrilateralConstructor());
         setVar("РОМБ_ВІД", new RhombConstructor());
         setVar("ТРАПЕЦІЯ_ВІД", new TrapezoidConstructor());
