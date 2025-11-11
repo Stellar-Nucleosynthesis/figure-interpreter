@@ -5,6 +5,7 @@ import java.awt.*;
 public interface Figure {
     void show(Graphics g, java.awt.Point origin, double unit);
     String getName();
+    void setName(String name);
 
     static int toScreenX(double worldX, java.awt.Point origin, double unit) {
         return (int) Math.round(origin.x + worldX * unit);

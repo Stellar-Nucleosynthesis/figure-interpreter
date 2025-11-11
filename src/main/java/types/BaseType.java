@@ -42,19 +42,25 @@ public enum BaseType implements Type {
                     return ((Integer) value).doubleValue();
             case SQUARE:
                 Quadrilateral q1 = (Quadrilateral) value;
-                return convertSquare(q1.getP1(), q1.getP2(), q1.getP3(), q1.getP4(), target);
+                Figure f1 = convertSquare(q1.getP1(), q1.getP2(), q1.getP3(), q1.getP4(), target);
+                f1.setName(q1.getName());
+                return f1;
             case RECT, RHOMB:
                 Quadrilateral q2 = (Quadrilateral) value;
-                return convertRectRhomb(q2.getP1(), q2.getP2(), q2.getP3(), q2.getP4(), target);
+                Figure f2 = convertRectRhomb(q2.getP1(), q2.getP2(), q2.getP3(), q2.getP4(), target);
+                f2.setName(q2.getName());
+                return f2;
             case PARAL, TRAPEZ:
                 Quadrilateral q3 = (Quadrilateral) value;
-                return convertParalTrapez(q3.getP1(), q3.getP2(), q3.getP3(), q3.getP4(), target);
+                Figure f3 = convertParalTrapez(q3.getP1(), q3.getP2(), q3.getP3(), q3.getP4(), target);
+                f3.setName(q3.getName());
+                return f3;
             default:
                 throw new TypeConversionException("Cannot convert from " + getName() + " to " + target);
         }
     }
 
-    private Object convertSquare(Point p1, Point p2, Point p3, Point p4, Type target) {
+    private Figure convertSquare(Point p1, Point p2, Point p3, Point p4, Type target) {
         return switch (target) {
             case RECT -> new Rectangle(p1, p2, p3, p4);
             case PARAL -> new Parallelogram(p1, p2, p3, p4);
@@ -65,7 +71,7 @@ public enum BaseType implements Type {
         };
     }
 
-    private Object convertRectRhomb(Point p1, Point p2, Point p3, Point p4, Type target) {
+    private Figure convertRectRhomb(Point p1, Point p2, Point p3, Point p4, Type target) {
         return switch (target) {
             case PARAL -> new Parallelogram(p1, p2, p3, p4);
             case QUAD -> new Quadrilateral(p1, p2, p3, p4);
@@ -73,7 +79,7 @@ public enum BaseType implements Type {
         };
     }
 
-    private Object convertParalTrapez(Point p1, Point p2, Point p3, Point p4, Type target) {
+    private Figure convertParalTrapez(Point p1, Point p2, Point p3, Point p4, Type target) {
         if(target == QUAD) {
             return new Quadrilateral(p1, p2, p3, p4);
         }

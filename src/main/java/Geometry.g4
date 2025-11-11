@@ -15,15 +15,11 @@ varDecl
     ;
 
 funcDecl
-    : LET FUNCTION ID FROM '(' paramList? ')' RETURNS type funcProgram
+    : LET FUNCTION ID FROM '(' (param (',' param)*)? ')' RETURNS type funcProgram
     ;
 
 showStm
     : SHOW expr ';'
-    ;
-
-paramList
-    : param (',' param)*
     ;
 
 param
@@ -39,23 +35,14 @@ returnStm
     ;
 
 expr
-    : constructorCall
-    | functionCall
+    : functionCall
     | ID
     | literal
     | '(' expr ')'
     ;
 
-constructorCall
-    : geometricType '(' argList? ')'
-    ;
-
 functionCall
-    : ID '(' argList? ')'
-    ;
-
-argList
-    : expr (',' expr)*
+    : ID '(' (expr (',' expr)*)? ')'
     ;
 
 type
@@ -70,13 +57,14 @@ numericType
 
 geometricType
     : POINT
-    | SQUARE
     | SEGMENT
     | LINE
-    | RECT
+    | QUAD
     | RHOMB
     | TRAPEZ
     | PARAL
+    | RECT
+    | SQUARE
     ;
 
 literal
@@ -94,13 +82,14 @@ SHOW        : 'ПОКАЗАТИ' ;
 INT         : 'ЦІЛЕ' ;
 DOUBLE      : 'ДІЙСНЕ' ;
 POINT       : 'ТОЧКА' ;
-SQUARE      : 'КВАДРАТ' ;
 SEGMENT     : 'ВІДРІЗОК' ;
 LINE        : 'ЛІНІЯ' ;
-RECT        : 'ПРЯМОКУТНИК' ;
+QUAD        : 'ЧОТИРИКУТНИК' ;
 RHOMB       : 'РОМБ' ;
 TRAPEZ      : 'ТРАПЕЦІЯ' ;
 PARAL       : 'ПАРАЛЕЛОГРАМ' ;
+RECT        : 'ПРЯМОКУТНИК' ;
+SQUARE      : 'КВАДРАТ' ;
 
 ID
     : [A-Za-z\u0400-\u04FF_] [A-Za-z0-9\u0400-\u04FF_]*

@@ -1,8 +1,8 @@
 package runtime.commands;
 
 import runtime.environment.ExecutionContext;
-import runtime.function.Function;
 import lombok.AllArgsConstructor;
+import runtime.function.Function;
 
 import java.util.List;
 

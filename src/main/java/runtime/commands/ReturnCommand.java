@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ReturnCommand implements Command {
-    private String resultVar;
     private String funcResult;
+    private String resultVar;
 
     @Override
     public void execute(ExecutionContext context) {

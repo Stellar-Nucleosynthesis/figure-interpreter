@@ -1,5 +1,6 @@
 package types;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import types.exceptions.TypeConversionException;
 
@@ -8,6 +9,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
+@AllArgsConstructor
 public class FunctionType implements Type {
     private Type returns;
     private List<Type> accepts;
