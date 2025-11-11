@@ -45,8 +45,10 @@ public class GeometryVisitorImpl implements GeometryVisitor<NodeAttributes> {
             return visit(ctx.varDecl());
         } else if (ctx.funcDecl() != null) {
             return visit(ctx.funcDecl());
-        } else {
+        } else if (ctx.showStm() != null) {
             return visit(ctx.showStm());
+        } else {
+            return visit(ctx.functionCall());
         }
     }
 

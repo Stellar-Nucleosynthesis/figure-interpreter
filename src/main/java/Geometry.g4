@@ -8,6 +8,7 @@ stm
     : varDecl
     | funcDecl
     | showStm
+    | functionCall ';'
     ;
 
 varDecl
