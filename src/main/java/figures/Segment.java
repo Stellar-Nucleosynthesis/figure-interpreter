@@ -28,6 +28,7 @@ public class Segment implements Figure {
         int y1 = Figure.toScreenY(p1.getY(), origin, unit);
         int x2 = Figure.toScreenX(p2.getX(), origin, unit);
         int y2 = Figure.toScreenY(p2.getY(), origin, unit);
+        g.setColor(Color.BLACK);
         g.drawLine(x1, y1, x2, y2);
 
         p1.show(g, origin, unit);
@@ -36,6 +37,7 @@ public class Segment implements Figure {
         if (name != null) {
             int xm = (x1 + x2) / 2;
             int ym = (y1 + y2) / 2;
+            g.setColor(Color.BLACK);
             Figure.drawName(g, name, xm, ym);
         }
     }

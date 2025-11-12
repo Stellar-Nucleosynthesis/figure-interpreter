@@ -20,8 +20,9 @@ public class Point implements Figure {
         int sx = Figure.toScreenX(x, origin, unit);
         int sy = Figure.toScreenY(y, origin, unit);
         int r = Math.max(2, (int) (unit * 0.05));
+        g.setColor(Color.RED);
         g.fillOval(sx - r, sy - r, 2 * r, 2 * r);
-
+        g.setColor(Color.BLACK);
         Figure.drawName(g, name, sx, sy);
     }
 }

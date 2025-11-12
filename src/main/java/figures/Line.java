@@ -33,8 +33,10 @@ public class Line implements Figure {
         int sx2 = Figure.toScreenX(worldRightX, origin, unit);
         int sy2 = Figure.toScreenY(worldYRight, origin, unit);
 
+        g.setColor(Color.LIGHT_GRAY);
         g.drawLine(sx1, sy1, sx2, sy2);
 
+        g.setColor(Color.BLACK);
         if (name != null) {
             int xm = sx1 + (sx2 - sx1) / 3;
             int ym = sy1 + (sy2 - sy1) / 3;

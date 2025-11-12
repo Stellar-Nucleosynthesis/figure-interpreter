@@ -30,16 +30,20 @@ public class Quadrilateral implements Figure {
             return;
         Point[] pts = {p1, p2, p3, p4};
         int[] xs = new int[4], ys = new int[4];
+        g.setColor(Color.BLUE);
         for (int i = 0; i < 4; i++) {
             xs[i] = Figure.toScreenX(pts[i].getX(), origin, unit);
             ys[i] = Figure.toScreenY(pts[i].getY(), origin, unit);
-            pts[i].show(g, origin, unit);
         }
         g.drawPolygon(xs, ys, 4);
+        for (int i = 0; i < 4; i++) {
+            pts[i].show(g, origin, unit);
+        }
 
         if (name != null) {
             int cx = (xs[0] + xs[1] + xs[2] + xs[3]) / 4;
             int cy = (ys[0] + ys[1] + ys[2] + ys[3]) / 4;
+            g.setColor(Color.BLACK);
             Figure.drawName(g, name, cx, cy);
         }
     }
